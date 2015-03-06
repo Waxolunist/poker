@@ -1,0 +1,14 @@
+nimm alle Möglichkeiten die der Gegner haben kann (3 Karten sind bekannt, 2 können eliminiert werden)
+und vergleiche sie mit den eigenen
+
+FiveCards Probability
+
+
+
+
+
+
+Format
+52 bits
+0th bit is a Two
+51th bit is an Ace

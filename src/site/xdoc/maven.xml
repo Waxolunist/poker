@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2012-2015 Christian Sterzl <christian.sterzl@gmail.com>
+
+    This file is part of poker.
+
+    V-Collaborate Poker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    V-Collaborate Poker is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with V-Collaborate Poker.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<document>
+    <properties>
+        <author>Christian Sterzl</author>
+		<title>Poker library</title>
+    </properties>
+    <meta name="keyword" content="poker"/>
+    <body>
+        <section name="Important Maven Commands">
+        	<subsection name="Signing">
+				<p>
+				For signing your build with gpg use the profile <code>-Prelease-sign-artifacts</code>.
+        		</p>
+        	</subsection>
+			<subsection name="Deployment">
+				<p>
+				For deploying the site to <a href="http://oss.sonatype.org">Sonatype</a> use following command:
+        		</p>
+        		<source>mvn clean deploy -Prelease-sign-artifacts</source>
+        	</subsection>
+        	<subsection name="Github">
+        		<p>
+        		For uploading the site to github pages use:
+        		</p>
+        		<source>mvn site -Pupload-github-site</source>
+        	</subsection>
+        	<subsection name="Site">
+				<p>
+				For site generation use:
+        		</p>
+        		<source>mvn site</source>
+        	</subsection>
+        	<subsection name="Javadoc">
+				<p>
+				For javadoc generation use:
+        		</p>
+        		<source>mvn javadoc:javadoc</source>
+        	</subsection>
+        	<subsection name="License Header Generation">
+				<p>
+				For generate the license headers use:
+        		</p>
+        		<source>mvn license:format</source>
+        	</subsection>
+        </section>
+        <section name="Making a release">
+        	<p>
+        		Prepare the release by setting the version in the pom.xml.
+        	</p>
+        	<p>
+        		Before creating the release first tag the current version.
+        		<source>git tag -a vX.Y.Z -m "Release Version X.Y.Z"</source>
+        		Control the creation of the tag by executing following commands:
+        		<source>git show vX.Y.Z</source>
+        		and
+        		<source>git describe --tags</source>
+        	</p>
+        	<p>
+        		If neccessary commit the last changes with 
+        		<source>git commit -m "Release Version X.Y.Z"</source>
+        	</p>
+        	<p>
+        		Now the tag can be pushed to github by invoking following command:
+        		<source>git push --tags</source>
+        	</p>
+           	<p>
+        	Now you can finally sign and release the artifacts.
+        	<source>mvn clean deploy -Prelease-sign-artifacts</source>
+        	After this step log in to <a href="https://oss.sonatype.org/">https://oss.sonatype.org/</a> and navigate to <em>Staging Repositories</em>.
+        	<br/>
+        	Choose your just created repository and close it. Give a description to it like "Release Version X.Y.Z".
+        	<br/>
+        	Now choose your closed repository and release it. Give a description to it like "Release Version X.Y.Z".
+        	</p>
+        	<p>
+        	You're done. The artifact should be after about 2 hours be visible in the central repository.
+        	</p>
+        	<p>
+        	Now start the next version in the pom by incrementing the version and appending "-SNAPSHOT".
+        	</p>
+        </section>
+        <section name="Prerequists for releasing">
+        	<subsection name="~/.m2/settings.xml">
+<!-- http://tohtml.com/xml/ -->
+<pre style='color:#000000;background:#ffffff;'>
+<span style='color:#7f0055; '>&lt;?</span><span style='color:#7f0055; font-weight:bold; '>xml</span><span style='color:#7f0055; '> </span><span style='color:#7f0055; '>version</span><span style='color:#7f0055; '>=</span><span style='color:#2a00ff; '>"</span><span style='color:#7f0055; font-weight:bold; '>1.0</span><span style='color:#2a00ff; '>"</span><span style='color:#7f0055; '>?></span>
+<span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>settings</span> xmlns=<span style='color:#2a00ff; '>"</span><span style='color:#2a00ff; '>http</span><span style='color:#2a00ff; '>:</span><span style='color:#7f0055; font-weight:bold; '>//</span><span style='color:#3f3fbf; '>maven.apache.org</span><span style='color:#3f3fbf; '>/SETTINGS/1.0.0</span><span style='color:#2a00ff; '>"</span> xmlns:xsi=<span style='color:#2a00ff; '>"</span><span style='color:#2a00ff; '>http</span><span style='color:#2a00ff; '>:</span><span style='color:#7f0055; font-weight:bold; '>//</span><span style='color:#3f3fbf; '>www.w3.org</span><span style='color:#3f3fbf; '>/2001/XMLSchema-instance</span><span style='color:#2a00ff; '>"</span> xsi:schemaLocation=<span style='color:#2a00ff; '>"</span><span style='color:#2a00ff; '>http</span><span style='color:#2a00ff; '>:</span><span style='color:#7f0055; font-weight:bold; '>//</span><span style='color:#3f3fbf; '>maven.apache.org</span><span style='color:#3f3fbf; '>/SETTINGS/1.0.0</span><span style='color:#2a00ff; '> </span><span style='color:#2a00ff; '>http</span><span style='color:#2a00ff; '>:</span><span style='color:#7f0055; font-weight:bold; '>//</span><span style='color:#3f3fbf; '>maven.apache.org</span><span style='color:#3f3fbf; '>/xsd/settings-1.0.0.xsd</span><span style='color:#2a00ff; '>"</span><span style='color:#7f0055; '>></span>
+  <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>localRepository</span><span style='color:#7f0055; '>/></span>
+  <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>interactiveMode</span><span style='color:#7f0055; '>/></span>
+  <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>usePluginRegistry</span><span style='color:#7f0055; '>/></span>
+  <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>offline</span><span style='color:#7f0055; '>/></span>
+  <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>pluginGroups</span><span style='color:#7f0055; '>/></span>
+  <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>servers</span><span style='color:#7f0055; '>></span>
+    <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>server</span><span style='color:#7f0055; '>></span>
+      <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>id</span><span style='color:#7f0055; '>></span>sonatype-nexus-staging<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>id</span><span style='color:#7f0055; '>></span>
+      <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>username</span><span style='color:#7f0055; '>></span>username<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>username</span><span style='color:#7f0055; '>></span>
+      <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>password</span><span style='color:#7f0055; '>></span>{encryptedpassword}<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>password</span><span style='color:#7f0055; '>></span>
+    <span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>server</span><span style='color:#7f0055; '>></span>
+    <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>server</span><span style='color:#7f0055; '>></span>
+      <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>id</span><span style='color:#7f0055; '>></span>sonatype-nexus-snapshots<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>id</span><span style='color:#7f0055; '>></span>
+      <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>username</span><span style='color:#7f0055; '>></span>username<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>username</span><span style='color:#7f0055; '>></span>
+      <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>password</span><span style='color:#7f0055; '>></span>{encryptedpassword}<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>password</span><span style='color:#7f0055; '>></span>
+    <span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>server</span><span style='color:#7f0055; '>></span>
+    <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>server</span><span style='color:#7f0055; '>></span>
+      <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>id</span><span style='color:#7f0055; '>></span>github<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>id</span><span style='color:#7f0055; '>></span>
+      <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>username</span><span style='color:#7f0055; '>></span>username<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>username</span><span style='color:#7f0055; '>></span>
+      <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>password</span><span style='color:#7f0055; '>></span>{encryptedpassword}<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>password</span><span style='color:#7f0055; '>></span>
+    <span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>server</span><span style='color:#7f0055; '>></span>
+  <span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>servers</span><span style='color:#7f0055; '>></span>
+  <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>mirrors</span><span style='color:#7f0055; '>></span>
+  <span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>mirrors</span><span style='color:#7f0055; '>></span>
+  <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>proxies</span><span style='color:#7f0055; '>/></span>
+  <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>profiles</span><span style='color:#7f0055; '>></span>
+    <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>profile</span><span style='color:#7f0055; '>></span>
+      <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>id</span><span style='color:#7f0055; '>></span>ossrh<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>id</span><span style='color:#7f0055; '>></span>
+      <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>activation</span><span style='color:#7f0055; '>></span>
+        <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>activeByDefault</span><span style='color:#7f0055; '>></span>true<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>activeByDefault</span><span style='color:#7f0055; '>></span>
+      <span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>activation</span><span style='color:#7f0055; '>></span>
+      <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>properties</span><span style='color:#7f0055; '>></span>
+        <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>gpg.executable</span><span style='color:#7f0055; '>></span>gpg2<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>gpg.executable</span><span style='color:#7f0055; '>></span>
+      <span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>properties</span><span style='color:#7f0055; '>></span>
+    <span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>profile</span><span style='color:#7f0055; '>></span>
+  <span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>profiles</span><span style='color:#7f0055; '>></span>
+  <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>activeProfiles</span><span style='color:#7f0055; '>></span>
+  <span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>activeProfiles</span><span style='color:#7f0055; '>></span>
+<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>settings</span><span style='color:#7f0055; '>></span>
+</pre>
+        	</subsection>
+        	<p></p>
+        </section>
+        
+    </body>
+</document>
